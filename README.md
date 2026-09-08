@@ -1,18 +1,16 @@
 # Goji & Gin
 
-A four drink home cocktail menu with a bartender you can ask for a
-recommendation. Describe a mood — smoky, floral, low proof, whatever — and the
-model retrieves the best matching recipe from the corpus and tells you what to
-make.
+A home made cocktail menu with a bartender you can ask for a
+recommendation. Describe a mood, flavors, or any allergies and 
+a magical recommendation will come forth with a detailed narrative 
+on why its the perfect choice for tonight.
 
-The drinks came from one Flushing shopping trip: dried goods from Kar Wor Tong,
-tea from Ten Ren, texture and mixers from Jmart, and the alcohol from a liquor
-store off Main St.
+Ingredients sourced from Flushing, Queens NY.
 
 ## How it works
 
 ```
-you type a mood
+you enter a query
       │
       ▼
 POST /ask (FastAPI)
@@ -33,7 +31,7 @@ the model writes the recommendation, grounded in what retrieval returned
 
 Retrieval lives in a standalone MCP server, not in the API. FastAPI spawns it
 as a subprocess at startup and keeps one session open. The model never sees the
-corpus directly — only the two tools.
+corpus directly, only the two tools.
 
 Two providers are supported, chosen with `LLM_PROVIDER`: **Groq** (default,
 open models like Llama) and **Anthropic** (Claude). Only the selected
@@ -92,9 +90,7 @@ GROQ_MODEL=openai/gpt-oss-120b
 ```
 
 `GROQ_MODEL` must be a model that supports tool calling — the app depends on it
-calling `search_drinks` before answering — **and one your account can actually
-reach**. Model availability varies per account, so list yours rather than
-guessing:
+calling `search_drinks` before answering
 
 ```bash
 cd backend
@@ -103,8 +99,8 @@ print(*sorted(m.id for m in groq.Groq(api_key=os.environ['GROQ_API_KEY']).models
 ```
 
 Ignore the `whisper-*` (speech), `orpheus-*` (audio) and `prompt-guard-*`
-(safety classifier) entries — they aren't chat models. `groq/compound*` ships
-its own server-side tools and isn't a fit for this app's custom tool calling.
+(safety classifier) entries. They aren't chat models. `groq/compound*` ships
+its own server-side tools and isn't ideal for this app's custom tool calling.
 
 **Anthropic.** Get a key at
 [console.anthropic.com](https://console.anthropic.com):
@@ -115,8 +111,7 @@ ANTHROPIC_API_KEY=sk-ant-...
 ANTHROPIC_MODEL=claude-sonnet-5
 ```
 
-The account also needs credits — a valid key with an empty balance returns a
-503 saying exactly that.
+The account also needs credits or will return a 503.
 
 **Embeddings** are separate and always local: `EMBEDDING_MODEL=all-MiniLM-L6-v2`
 needs no key and downloads (~80MB) the first time the MCP server starts, so the
@@ -147,9 +142,9 @@ frontend/
     data/drinks.ts          menu display copy only, not recipes
 ```
 
-Recipes live in `drinks.json`. `drinks.ts` holds only the four names, one-line
+Recipes live in `drinks.json`. `drinks.ts` holds only the names, one-line
 notes and taglines the menu renders, so adding a drink means editing the JSON
-plus a few lines of display copy — not two parallel recipe definitions.
+plus a few lines of display copy, not two parallel recipe definitions.
 
 ## Conventions
 
