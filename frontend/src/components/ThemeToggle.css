@@ -1,0 +1,43 @@
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+
+  background: var(--paper-raised);
+  border: 1.5px solid var(--paper-line);
+  border-radius: 50%;
+  color: var(--ink);
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.theme-toggle:hover {
+  border-color: var(--osmanthus);
+  color: var(--osmanthus);
+}
+
+.theme-toggle__icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* Drawn in the same hand as the cocktail line art: open strokes, round caps. */
+.theme-toggle__body,
+.theme-toggle__rays path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.theme-toggle__rays path {
+  stroke-width: 1.6;
+}

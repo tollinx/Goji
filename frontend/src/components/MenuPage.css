@@ -1,0 +1,165 @@
+/* Page one: the drink menu. */
+
+.menu-page {
+  justify-content: flex-start;
+  padding: clamp(28px, 6vw, 72px) clamp(24px, 7vw, 96px) 40px;
+}
+
+/* Header ----------------------------------------------------------------- */
+
+.menu-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.menu-title {
+  font-size: clamp(3rem, 9vw, 6rem);
+  font-weight: 700;
+  line-height: 0.86;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+  transform: rotate(-1deg);
+}
+
+.menu-title span {
+  display: block;
+}
+
+.menu-title .accent {
+  color: var(--goji);
+}
+
+.menu-kicker {
+  margin-top: 10px;
+  max-width: 34ch;
+  color: var(--ink-soft);
+  font-size: 1.05rem;
+  font-style: italic;
+}
+
+.glass-flute {
+  flex-shrink: 0;
+  width: clamp(80px, 11vw, 132px);
+  margin-top: 6px;
+}
+
+/* Drink list ------------------------------------------------------------- */
+
+.menu-list {
+  display: flex;
+  flex-direction: column;
+  max-width: 680px;
+  margin-top: clamp(28px, 5vw, 48px);
+}
+
+.menu-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: baseline;
+  gap: 14px;
+  padding: 18px 0;
+  border-bottom: 2px dashed var(--paper-line);
+}
+
+.menu-row:first-child {
+  padding-top: 0;
+}
+
+.menu-mark {
+  color: var(--osmanthus);
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.menu-name-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.menu-name {
+  font-size: clamp(1.35rem, 2.6vw, 1.7rem);
+  font-weight: 700;
+}
+
+.menu-note {
+  max-width: 46ch;
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+}
+
+.menu-tag {
+  align-self: center;
+  color: var(--plum);
+  font-size: 1.35rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* Footer ----------------------------------------------------------------- */
+
+.menu-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: auto;
+  padding-top: 32px;
+}
+
+.provenance {
+  max-width: 40ch;
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.provenance strong {
+  color: var(--ink);
+}
+
+.scroll-cue {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  color: var(--ink-soft);
+  font-family: 'Caveat', 'Segoe Print', cursive;
+  font-size: 1.2rem;
+  cursor: pointer;
+  animation: scroll-cue-bob 2.4s ease-in-out infinite;
+}
+
+.scroll-cue__arrow {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@keyframes scroll-cue-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}
+
+/* Decorative line art ---------------------------------------------------- */
+
+.martini-corner {
+  position: absolute;
+  left: clamp(-10px, -1vw, 10px);
+  bottom: -6px;
+  width: clamp(120px, 16vw, 190px);
+}

@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: goji-and-gin-backend
+    runtime: python
+    # sentence-transformers pulls in torch; this needs more than the free
+    # instance's 512MB RAM. See "Deployment notes" in README.md.
+    plan: standard
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: ENV
+        value: production
+      - key: CORS_ORIGINS
+        value: https://goji-and-gin.vercel.app
+      - key: RATE_LIMIT_PER_MINUTE
+        value: "10"
+      - key: MAX_TOKENS
+        value: "500"
+      - key: LLM_PROVIDER
+        value: groq
+      - key: GROQ_MODEL
+        value: openai/gpt-oss-120b
+      - key: EMBEDDING_MODEL
+        value: all-MiniLM-L6-v2
+      # Set in the Render dashboard — never commit these values. Only the key
+      # for the configured LLM_PROVIDER is required.
+      - key: GROQ_API_KEY
+        sync: false
+      - key: ANTHROPIC_API_KEY
+        sync: false

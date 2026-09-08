@@ -23,8 +23,18 @@ venv/
 env/
 ENV/
 .venv
+
+# Secrets — real API keys live in .env, never in the repo.
+# .env.example is the committed template and is re-included below.
 .env
-.env.local
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+secrets.json
+service-account*.json
 
 # Node
 node_modules/

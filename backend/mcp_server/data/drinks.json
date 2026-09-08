@@ -1,0 +1,99 @@
+[
+  {
+    "id": "spiked-goji-tea",
+    "name": "Spiked Goji Tea",
+    "search_text": "Spiked goji tea. Warm, easy, crowd pleaser, batch drink. Goji berries, dried longan, red dates simmered with rock sugar, cut with aged rum or brandy. Tastes like a hot toddy. Good for a party or a cold night. Low effort, low proof compared to spirit forward drinks.",
+    "tasting_notes": "Warm, sweet, a little medicinal in the best way. Red date and longan do hot toddy work.",
+    "mood_tags": ["warm", "easy", "crowd pleaser", "low proof", "party batch", "cozy"],
+    "base": {
+      "name": "Goji tea (party batch)",
+      "ingredients": ["goji berries", "dried longan", "red dates", "rock sugar"],
+      "steps": [
+        "Simmer goji, dried longan, and red dates in water on low heat for about 20 minutes.",
+        "Sweeten to taste with rock sugar and keep warm for serving."
+      ]
+    },
+    "additions": [
+      { "item": "aged rum or brandy", "amount": "1.5 oz per 6 oz tea" }
+    ],
+    "method": [
+      "Serve the goji tea base warm.",
+      "Stir in aged rum or brandy just before serving."
+    ]
+  },
+  {
+    "id": "roasted-oolong-highball",
+    "name": "Roasted Oolong Highball",
+    "search_text": "Roasted oolong highball. Whisky forward, malty, nutty, almost smoky, not a novelty drink. Overnight cold brewed roasted oolong tea, Japanese whisky, soda water, big ice, lemon peel. Long, refreshing, tastes like a real cocktail not a tea gimmick.",
+    "tasting_notes": "Nutty, roasted, whisky adjacent even before the whisky goes in. Long and refreshing.",
+    "mood_tags": ["whisky forward", "malty", "refreshing", "not too sweet", "highball"],
+    "base": {
+      "name": "Roasted oolong cold brew",
+      "ingredients": ["roasted oolong tea"],
+      "steps": [
+        "Steep 4g roasted oolong per 500ml cold water in the fridge overnight."
+      ]
+    },
+    "additions": [
+      { "item": "Japanese whisky", "amount": "1.5 oz" },
+      { "item": "oolong cold brew", "amount": "3 oz" },
+      { "item": "soda water", "amount": "top" },
+      { "item": "lemon peel", "amount": "expressed and dropped in" }
+    ],
+    "method": [
+      "Combine whisky and cold brewed oolong over big ice.",
+      "Top with soda, long stir.",
+      "Express lemon peel over the top and drop it in."
+    ]
+  },
+  {
+    "id": "osmanthus-gin-sour",
+    "name": "Osmanthus Gin Sour",
+    "search_text": "Osmanthus gin sour. Floral, clean, pretty, a little showy, good for someone who wants something delicate and citrus forward. Dried osmanthus flower syrup, gin, lemon juice, optional egg white for texture. Not smoky, not boozy tasting, approachable.",
+    "tasting_notes": "Floral, bright, clean citrus. The prettiest of the four, especially with the egg white foam.",
+    "mood_tags": ["floral", "clean", "citrus", "pretty", "gin forward", "delicate"],
+    "base": {
+      "name": "Osmanthus syrup",
+      "ingredients": ["dried osmanthus", "rock sugar"],
+      "steps": [
+        "Steep 2 tbsp dried osmanthus in 1 cup hot water with 1 cup rock sugar.",
+        "Let cool, then strain."
+      ]
+    },
+    "additions": [
+      { "item": "gin", "amount": "2 oz" },
+      { "item": "osmanthus syrup", "amount": "0.75 oz" },
+      { "item": "lemon juice", "amount": "0.75 oz" },
+      { "item": "egg white", "amount": "optional, for texture" }
+    ],
+    "method": [
+      "Dry shake gin, syrup, lemon juice, and egg white (if using) without ice.",
+      "Add ice and shake again hard.",
+      "Double strain into a coupe."
+    ]
+  },
+  {
+    "id": "suanmeitang-mezcal",
+    "name": "Suanmeitang, Smoke on Smoke",
+    "search_text": "Suanmeitang mezcal cocktail. Smoky, tart, dark, unusual, nobody has had this before, great non alcoholic option too. Smoked plum, hawthorn, tangerine peel, licorice root simmered and finished with osmanthus, split with mezcal or rye and lime. Also works completely sober served straight over ice.",
+    "tasting_notes": "Smoky, tart, dark, a little medicinal. The mezcal doubles down on the smoke instead of fighting it.",
+    "mood_tags": ["smoky", "tart", "non alcoholic option", "unusual", "dark", "sour"],
+    "base": {
+      "name": "Suanmeitang base",
+      "ingredients": ["smoked plum", "hawthorn slices", "aged tangerine peel", "licorice root", "rock sugar", "osmanthus syrup"],
+      "steps": [
+        "Simmer smoked plum, hawthorn, tangerine peel, and licorice root for 40 minutes.",
+        "Sweeten with rock sugar.",
+        "Finish with a splash of osmanthus syrup before serving."
+      ]
+    },
+    "additions": [
+      { "item": "mezcal or rye", "amount": "1.5 oz" },
+      { "item": "lime", "amount": "squeeze" }
+    ],
+    "method": [
+      "For non drinkers: serve the suanmeitang base straight over ice.",
+      "For a cocktail: split 2 oz suanmeitang base with 1.5 oz mezcal or rye and a lime squeeze over ice."
+    ]
+  }
+]

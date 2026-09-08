@@ -1,0 +1,169 @@
+/* Page two: ask the bartender. */
+
+.ask-page {
+  justify-content: center;
+  align-items: center;
+  padding: 32px 24px;
+  border-top: 2px solid var(--paper-line);
+}
+
+.ask-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  width: min(640px, 100%);
+}
+
+.ask-mark {
+  width: 46px;
+  height: 46px;
+}
+
+.ask-title {
+  font-size: clamp(1.8rem, 4.4vw, 2.6rem);
+  font-weight: 700;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.ask-title .accent {
+  color: var(--osmanthus);
+}
+
+.ask-sub {
+  margin-top: -14px;
+  color: var(--ink-soft);
+  font-size: 0.98rem;
+  text-align: center;
+}
+
+/* Search field ----------------------------------------------------------- */
+
+.ask-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 8px 8px 22px;
+  background: var(--paper-raised);
+  border: 1.5px solid var(--paper-line);
+  border-radius: 999px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.ask-form:focus-within {
+  border-color: var(--goji);
+  box-shadow: 0 0 0 3px var(--focus-ring);
+}
+
+.ask-input {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+.ask-input::placeholder {
+  color: var(--ink-soft);
+}
+
+/* The wrapper already shows focus, so the inner field doesn't double up. */
+.ask-input:focus-visible {
+  outline: none;
+}
+
+.ask-submit {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: var(--ink);
+  border: none;
+  border-radius: 50%;
+  color: var(--paper);
+  cursor: pointer;
+}
+
+.ask-submit:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.ask-submit__icon {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Mood chips ------------------------------------------------------------- */
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.chip {
+  padding: 7px 14px;
+  background: transparent;
+  border: 1.5px solid var(--paper-line);
+  border-radius: 999px;
+  color: var(--ink-soft);
+  font-family: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.chip:hover,
+.chip:focus-visible {
+  border-color: var(--osmanthus);
+  color: var(--ink);
+}
+
+.chip:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* Response --------------------------------------------------------------- */
+
+.answer {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+  padding-top: 22px;
+  border-top: 1.5px dashed var(--paper-line);
+}
+
+.answer-name {
+  color: var(--goji);
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.answer-body {
+  color: var(--ink-soft);
+  font-size: 0.96rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+}
+
+.answer-error {
+  max-width: 46ch;
+  color: var(--plum);
+  font-size: 0.92rem;
+  text-align: center;
+}

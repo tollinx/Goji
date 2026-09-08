@@ -1,0 +1,63 @@
+/**
+ * Design tokens — the single source of truth for color.
+ *
+ * `useTheme` always stamps `data-theme="light"` or `"dark"` on <html>,
+ * resolving the OS preference when the user hasn't chosen explicitly. That
+ * means this file needs exactly one block per theme with no duplicated
+ * values: no `prefers-color-scheme` copy to keep in sync.
+ *
+ * (The app is client rendered, so JS is already required to see anything —
+ * relying on it for the theme attribute costs nothing. index.html stamps the
+ * attribute before first paint so there's no flash of the wrong theme.)
+ *
+ * The dark palette is tuned by hand, not inverted: accents are lifted in
+ * lightness so they hold contrast against a dark ground.
+ */
+
+:root,
+:root[data-theme='light'] {
+  color-scheme: light;
+
+  /* Surfaces */
+  --paper: #f4efe2; /* page ground */
+  --paper-raised: #efe8d7; /* inputs and wells, slightly deeper than the page */
+  --paper-line: #e4dcc7; /* rules, borders, dividers */
+
+  /* Text */
+  --ink: #221d15; /* primary text and line art */
+  --ink-soft: #55503f; /* secondary text, captions */
+
+  /* Accents, named for the drinks they came from */
+  --goji: #c8571f; /* primary accent */
+  --plum: #8f2f3a; /* secondary accent, taglines */
+  --osmanthus: #d79a2c; /* tertiary accent, numerals */
+  --olive: #5c6b3f; /* botanical fill in the line art */
+
+  /* Effects */
+  --focus-ring: rgba(200, 87, 31, 0.28);
+
+  /* Line-art opacities, tuned per theme so ink reads on either ground */
+  --doodle-opacity: 0.85;
+  --doodle-fill-opacity: 0.55;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --paper: #1d1a14;
+  --paper-raised: #262218;
+  --paper-line: #362f22;
+
+  --ink: #efe7d4;
+  --ink-soft: #b1a68d;
+
+  --goji: #e88a4c;
+  --plum: #d97883;
+  --osmanthus: #e8b64f;
+  --olive: #9db06e;
+
+  --focus-ring: rgba(232, 138, 76, 0.32);
+
+  --doodle-opacity: 0.75;
+  --doodle-fill-opacity: 0.45;
+}

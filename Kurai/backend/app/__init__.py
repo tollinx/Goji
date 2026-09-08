@@ -1,1 +1,0 @@
-# Kurai backend application package

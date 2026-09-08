@@ -1,0 +1,97 @@
+/**
+ * Reset, document defaults, and the small set of utilities shared by more
+ * than one component. Anything used by a single component lives in that
+ * component's stylesheet instead.
+ */
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+body {
+  font-family: 'Karla', ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Typography roles ------------------------------------------------------- */
+
+.hand {
+  font-family: 'Kalam', 'Segoe Print', cursive;
+}
+
+.script {
+  font-family: 'Caveat', 'Segoe Print', cursive;
+}
+
+/* Line art --------------------------------------------------------------- */
+
+/**
+ * The hand drawn SVGs carry no presentation attributes of their own — the
+ * markup holds geometry only (viewBox, d, cx/cy/r) and every stroke, fill and
+ * opacity is set here so both themes are controlled from the stylesheets.
+ */
+
+.doodle {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  opacity: var(--doodle-opacity);
+}
+
+/* Filled shapes inside a .doodle: no stroke, themed fill. */
+.doodle-fill {
+  stroke: none;
+  fill-opacity: var(--doodle-fill-opacity);
+}
+
+.doodle-fill--goji {
+  fill: var(--goji);
+}
+
+.doodle-fill--olive {
+  fill: var(--olive);
+}
+
+.doodle-fill--osmanthus {
+  fill: var(--osmanthus);
+}
+
+.doodle-fill--ink {
+  fill: var(--ink);
+  fill-opacity: 1;
+}
+
+/* Accessibility ---------------------------------------------------------- */
+
+:where(a, button, input, [tabindex]):focus-visible {
+  outline: 2px solid var(--goji);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

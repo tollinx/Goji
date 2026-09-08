@@ -1,0 +1,20 @@
+/**
+ * App shell only: the scroll-snap container and the shared <section> frame.
+ * Page-specific rules live in MenuPage.css and AskPage.css.
+ */
+
+.scroller {
+  height: 100vh;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
+.page {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
