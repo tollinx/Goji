@@ -32,6 +32,6 @@ RUN python -c "import os; from sentence_transformers import SentenceTransformer;
 
 EXPOSE 8000
 
-# Railway and Render inject $PORT; default to 8000 for local `docker run`.
-# Use shell form (not JSON array) so $PORT gets expanded.
-CMD uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}
+# app/run.py reads $PORT itself, so this command carries no shell variables and
+# works whether or not the platform runs it through a shell.
+CMD ["python", "-m", "app.run"]
