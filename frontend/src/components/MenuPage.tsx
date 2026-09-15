@@ -22,8 +22,7 @@ export default function MenuPage({ onScrollToAsk }: { onScrollToAsk: () => void 
             <span className="accent">&amp; GIN</span>
           </h1>
           <p className="menu-kicker">
-            Four drinks built from a Flushing shopping trip — dried goods, roasted tea, and
-            whatever the liquor store on Main St had open.
+            Chinese herbal teas and drinks
           </p>
         </div>
         <svg className="glass-flute doodle" viewBox="0 0 100 210" aria-hidden="true">
@@ -52,9 +51,7 @@ export default function MenuPage({ onScrollToAsk }: { onScrollToAsk: () => void 
 
       <div className="menu-footer">
         <p className="provenance">
-          <strong>Sourced from</strong> Kar Wor Tong for the dried goods, Ten Ren for tea (cash
-          only), Jmart for texture and ice, and a liquor store off Main St for everything with
-          proof.
+          <strong>Sourced from</strong> Chinese grocery stores, Taiwanese imported tea, and Chinatown's herbal ingredients 
         </p>
         <ScrollCue onClick={onScrollToAsk} />
       </div>

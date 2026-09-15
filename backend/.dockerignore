@@ -1,0 +1,14 @@
+# Never bake real credentials into an image. .env.example is the template and
+# carries no values, so it is allowed through.
+.env
+.env.*
+!.env.example
+
+# 1.1GB of local virtualenv; the image builds its own.
+venv/
+.venv/
+
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.DS_Store

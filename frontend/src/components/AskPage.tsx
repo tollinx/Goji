@@ -6,7 +6,7 @@ const MOOD_CHIPS = [
   { label: 'floral', query: 'floral and clean' },
   { label: 'smoky', query: 'something smoky' },
   { label: 'low proof', query: 'low proof crowd pleaser' },
-  { label: 'whisky', query: 'whisky forward' },
+  { label: 'slow sipping', query: 'easy to sip on and take your time with this drink' },
   { label: 'non alcoholic', query: 'good for non drinkers' },
 ];
 
@@ -54,14 +54,15 @@ const AskPage = forwardRef<HTMLElement>((_props, ref) => {
           <h2 className="ask-title hand">
             Need recommendations? <span className="accent">Just ask.</span>
           </h2>
-          <p className="ask-sub">Smoky, floral, boozy, easy for a crowd — tell me the mood.</p>
+          <div></div>
+          <p className="ask-sub">Smoky, floral, boozy, easy for a crowd. Just let me know</p>
         </div>
 
         <form className="ask-form" onSubmit={handleSubmit}>
           <input
             className="ask-input"
             type="text"
-            placeholder="Something smoky and low effort..."
+            placeholder="Write a message..."
             autoComplete="off"
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
