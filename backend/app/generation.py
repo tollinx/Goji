@@ -28,16 +28,30 @@ MAX_TURNS = 4
 SYSTEM_PROMPT = """You are the bartender for Goji & Gin, a four drink home cocktail menu.
 
 Always call search_drinks first to find candidates for what the user describes.
-You may call get_drink to pull the exact recipe for the drink you're about to recommend.
+You may call get_drink if you need more detail about one before deciding.
 
-Only ever recommend a drink that search_drinks actually returned — never invent
-a drink or improvise a recipe that isn't in the corpus. If nothing in the
-search results is a good match for the request, say so plainly and suggest the
-closest option instead of pretending it's a perfect fit.
+Only ever pick a drink that search_drinks actually returned — never invent a
+drink that isn't in the corpus. If nothing in the search results is a good
+match, say so plainly and offer the closest option rather than pretending it
+fits.
 
-Keep the answer short: which drink, why it fits what they asked for, and the
-key build details (spirit, amount, one line of method). Talk like a bartender,
-not a search engine."""
+search_drinks ranks by similarity, which is a starting point, not the decision.
+Read the candidates and pick the one that genuinely fits — it is often not the
+top hit.
+
+When you've decided, call recommend_drink. That is how you answer; do not reply
+with plain text instead. Its `why` is two or three sentences on why this drink
+matches what they asked for — the flavors, the effort, or the occasion they
+mentioned. Talk like a bartender, not a search engine.
+
+Three hard rules for `why`:
+- No recipe. No ingredients, measurements, or method — explain the match.
+- Don't name the drink. Its name is already on screen directly above your text,
+  so repeating it reads twice. Start with "It" or with the flavor itself.
+- Plain sentences. No markdown, no bold, no bullet points, no headings.
+
+The one time to break the naming rule: if nothing really fits, say so first
+("We don't have a true X, but...") so they know it's a substitute."""
 
 GAVE_UP = "I couldn't settle on a recommendation — try rephrasing what you're in the mood for."
 
@@ -46,15 +60,52 @@ class GenerationError(RuntimeError):
     """Configuration we can detect ourselves. Surfaced as a 503."""
 
 
-def _drink_ref(tool_name: str, result: Any) -> dict | None:
-    """Pick out which drink a tool result points at, for the API response."""
-    if tool_name == "get_drink" and isinstance(result, dict) and "id" in result:
-        return {"id": result["id"], "name": result["name"]}
-    # Fall back to the top search hit, in case the model answers without
-    # calling get_drink.
-    if tool_name == "search_drinks" and isinstance(result, list) and result:
-        return {"id": result[0]["id"], "name": result[0]["name"]}
-    return None
+# The model answers by calling this rather than replying with text, so the
+# drink it picked is stated outright. Inferring it from the last tool result
+# got this wrong: search_drinks ranks by embedding similarity, and the model
+# frequently (correctly) chooses a lower-ranked candidate.
+RECOMMEND_TOOL = {
+    "name": "recommend_drink",
+    "description": (
+        "Give your final answer. Call this once you have decided which drink to "
+        "recommend. Do not reply with plain text instead."
+    ),
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "drink_id": {
+                "type": "string",
+                "description": "id of the chosen drink, exactly as search_drinks returned it.",
+            },
+            "why": {
+                "type": "string",
+                "description": (
+                    "Two or three plain sentences on why this drink matches the request. "
+                    "No recipe, no measurements, no markdown."
+                ),
+            },
+        },
+        "required": ["drink_id", "why"],
+    },
+}
+
+
+async def _finish(arguments: dict) -> dict | None:
+    """Resolve a recommend_drink call into the API response.
+
+    Looks the id up in the corpus, which both supplies the canonical name and
+    rejects an id the model invented. Returns None if the id is unknown, so the
+    caller can ask the model to try again.
+    """
+    record = await mcp_connection.call_tool(
+        "get_drink", {"drink_id": arguments.get("drink_id", "")}
+    )
+    if not isinstance(record, dict) or "id" not in record:
+        return None
+    return {
+        "answer": (arguments.get("why") or "").strip(),
+        "drink": {"id": record["id"], "name": record["name"]},
+    }
 
 
 def _require(api_key: str, env_var: str) -> str:
@@ -94,14 +145,13 @@ async def _ask_groq(question: str) -> dict:
                 "parameters": tool["parameters"],
             },
         }
-        for tool in _require_tools()
+        for tool in [*_require_tools(), RECOMMEND_TOOL]
     ]
 
     messages: list[dict] = [
         {"role": "system", "content": SYSTEM_PROMPT},
         {"role": "user", "content": question},
     ]
-    drink: dict | None = None
 
     for _ in range(MAX_TURNS):
         response = await client.chat.completions.create(
@@ -114,7 +164,9 @@ async def _ask_groq(question: str) -> dict:
         message = response.choices[0].message
 
         if not message.tool_calls:
-            return {"answer": message.content or "", "drink": drink}
+            # The model answered in prose instead of calling recommend_drink,
+            # so there's no reliable drink to name alongside it.
+            return {"answer": message.content or "", "drink": None}
 
         # Echo the assistant turn back explicitly rather than dumping the SDK
         # model, so only fields the API accepts are sent.
@@ -138,8 +190,15 @@ async def _ask_groq(question: str) -> dict:
 
         for call in message.tool_calls:
             arguments = json.loads(call.function.arguments or "{}")
-            result = await mcp_connection.call_tool(call.function.name, arguments)
-            drink = _drink_ref(call.function.name, result) or drink
+
+            if call.function.name == "recommend_drink":
+                answer = await _finish(arguments)
+                if answer is not None:
+                    return answer
+                result: Any = {"error": "Unknown drink_id. Use one search_drinks returned."}
+            else:
+                result = await mcp_connection.call_tool(call.function.name, arguments)
+
             messages.append(
                 {
                     "role": "tool",
@@ -148,7 +207,7 @@ async def _ask_groq(question: str) -> dict:
                 }
             )
 
-    return {"answer": GAVE_UP, "drink": drink}
+    return {"answer": GAVE_UP, "drink": None}
 
 
 # --- Anthropic -------------------------------------------------------------
@@ -173,11 +232,10 @@ async def _ask_anthropic(question: str) -> dict:
             "description": tool["description"],
             "input_schema": tool["parameters"],
         }
-        for tool in _require_tools()
+        for tool in [*_require_tools(), RECOMMEND_TOOL]
     ]
 
     messages: list[dict] = [{"role": "user", "content": question}]
-    drink: dict | None = None
 
     for _ in range(MAX_TURNS):
         response = await client.messages.create(
@@ -189,8 +247,10 @@ async def _ask_anthropic(question: str) -> dict:
         )
 
         if response.stop_reason != "tool_use":
+            # Answered in prose instead of calling recommend_drink, so there's
+            # no reliable drink to name alongside it.
             answer = "".join(block.text for block in response.content if block.type == "text")
-            return {"answer": answer, "drink": drink}
+            return {"answer": answer, "drink": None}
 
         messages.append({"role": "assistant", "content": response.content})
 
@@ -198,8 +258,15 @@ async def _ask_anthropic(question: str) -> dict:
         for block in response.content:
             if block.type != "tool_use":
                 continue
-            result = await mcp_connection.call_tool(block.name, block.input)
-            drink = _drink_ref(block.name, result) or drink
+
+            if block.name == "recommend_drink":
+                answer = await _finish(block.input)
+                if answer is not None:
+                    return answer
+                result: Any = {"error": "Unknown drink_id. Use one search_drinks returned."}
+            else:
+                result = await mcp_connection.call_tool(block.name, block.input)
+
             tool_results.append(
                 {
                     "type": "tool_result",
@@ -210,7 +277,7 @@ async def _ask_anthropic(question: str) -> dict:
 
         messages.append({"role": "user", "content": tool_results})
 
-    return {"answer": GAVE_UP, "drink": drink}
+    return {"answer": GAVE_UP, "drink": None}
 
 
 async def ask(question: str) -> dict:
