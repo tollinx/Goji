@@ -6,6 +6,7 @@ here at startup and shut down with the app.
 """
 
 import logging
+import os
 from contextlib import asynccontextmanager
 
 import anthropic
@@ -50,9 +51,15 @@ app = FastAPI(
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, rate_limit_exceeded_handler)
 
+cors_origins = os.environ.get(
+    "CORS_ORIGINS",
+    "http://localhost:5173,http://localhost:8081",
+).split(",")
+cors_origins = [origin.strip() for origin in cors_origins]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://goji-khaki.vercel.app"],
+    allow_origins=cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
